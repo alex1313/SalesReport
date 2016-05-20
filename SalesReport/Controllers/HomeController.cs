@@ -5,9 +5,7 @@ namespace SalesReport.Controllers
     using System.IO;
     using System.Linq;
     using DataAccess;
-    using Domain;
     using Services;
-    using Services.Implementation;
 
     public class HomeController : Controller
     {
@@ -16,9 +14,14 @@ namespace SalesReport.Controllers
 
         private readonly SalesReportDbContext _dbContext = new SalesReportDbContext();
 
-        //TODO: add IoC
-        private readonly IExcelPackageExportService _excelPackageExportService = new ExcelPackageExportService();
-        private readonly IEmailSender _emailSender = new EmailSender();
+        private readonly IExcelPackageExportService _excelPackageExportService;
+        private readonly IEmailSender _emailSender;
+
+        public HomeController(IExcelPackageExportService excelPackageExportService, IEmailSender emailSender)
+        {
+            _excelPackageExportService = excelPackageExportService;
+            _emailSender = emailSender;
+        }
 
         public ActionResult Index()
         {

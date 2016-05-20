@@ -1,7 +1,6 @@
 ﻿namespace SalesReport.Services
 {
     using System.Collections.Generic;
-    using Domain;
     using Domain.Entities;
     using OfficeOpenXml;
 
