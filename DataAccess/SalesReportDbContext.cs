@@ -9,8 +9,6 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>()
-                .ToTable("Order", "dbo");
         }
     }
 }
