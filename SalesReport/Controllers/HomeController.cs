@@ -22,11 +22,7 @@ namespace SalesReport.Controllers
 
         public ActionResult Index()
         {
-            var orders = _dbContext.Orders.AsEnumerable();
-
-            var firstOrder = orders.FirstOrDefault();
-
-            return View(firstOrder);
+            return View();
         }
 
         public FileContentResult DownloadReport()

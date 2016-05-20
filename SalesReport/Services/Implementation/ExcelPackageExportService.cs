@@ -4,6 +4,7 @@ namespace SalesReport.Services.Implementation
     using System.Drawing;
     using System.Linq;
     using Domain;
+    using Domain.Entities;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
