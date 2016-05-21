@@ -17,17 +17,31 @@ namespace SalesReport.Services.Implementation
 
             var worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
 
-            worksheet.Cells[1, 1].Value = "Дата заказа";
+            worksheet.Cells[1, 1].Value = "Order id";
+            worksheet.Cells[1, 2].Value = "Order date";
+            worksheet.Cells[1, 3].Value = "Unit price";
+            worksheet.Cells[1, 4].Value = "Quantity";
+            worksheet.Cells[1, 5].Value = "Sum";
 
-            var orderList = orders.ToList();
-            for (var i = 0; i < orderList.Count; i++)
+            var orderDetailsList = orders.SelectMany(x => x.OrderDetails).ToList();
+            for (var i = 0; i < orderDetailsList.Count; i++)
             {
-                var cell = worksheet.Cells[i + 2, 1];
-                cell.Style.Numberformat.Format = cell.Style.Numberformat.Format = DateFormat;
-                cell.Value = orderList[i].OrderDate;
+                worksheet.Cells[i + 2, 1].Value = orderDetailsList[i].OrderID;
+
+                var orderDateCell = worksheet.Cells[i + 2, 2];
+                orderDateCell.Style.Numberformat.Format = orderDateCell.Style.Numberformat.Format = DateFormat;
+                orderDateCell.Value = orderDetailsList[i].Order.OrderDate;
+
+                var unitPriceCell = worksheet.Cells[i + 2, 3];
+                unitPriceCell.Value = orderDetailsList[i].UnitPrice;
+
+                var quantityCell = worksheet.Cells[i + 2, 4];
+                quantityCell.Value = orderDetailsList[i].Quantity;
+
+                worksheet.Cells[i + 2, 5].Formula = $"{unitPriceCell.Address} * {quantityCell.Address}";
             }
 
-            using (var cells = worksheet.Cells["A1"])
+            using (var cells = worksheet.Cells["A1:E1"])
             {
                 cells.Style.Font.Bold = true;
                 cells.Style.Fill.PatternType = ExcelFillStyle.Solid;
