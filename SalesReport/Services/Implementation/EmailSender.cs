@@ -1,5 +1,6 @@
 ﻿namespace SalesReport.Services.Implementation
 {
+    using System.Configuration;
     using System.IO;
     using System.Net;
     using System.Net.Mail;
@@ -11,11 +12,9 @@
 
         public void Send(string address, string subject, string body, MemoryStream attachmentStream)
         {
-            //TODO: getting from configuration file
-            var fromAddress = new MailAddress("from@gmail.com", "From Name");
-            const string fromPassword = "fromPassword";
-
-            var toAddress = new MailAddress(address);
+            var senderAddress = new MailAddress(ConfigurationManager.AppSettings["SenderMailAddress"]);
+            var senderPassword = ConfigurationManager.AppSettings["SenderMailPassword"];
+            var recipientAddress = new MailAddress(address);
 
             var smtp = new SmtpClient
             {
@@ -24,18 +23,21 @@
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                Credentials = new NetworkCredential(senderAddress.Address, senderPassword)
             };
 
-            var attachment = new Attachment(attachmentStream, _attachmentContentType);
+            var attachment = new Attachment(attachmentStream, _attachmentContentType)
+            {
+                Name = "Sales report.xlsx"
+            };
 
-            using (var mail = new MailMessage(fromAddress, toAddress)
+            using (var mail = new MailMessage(senderAddress, recipientAddress)
             {
                 Subject = subject,
                 Body = body,
                 Attachments = { attachment }
             })
-            
+
             smtp.Send(mail);
         }
     }

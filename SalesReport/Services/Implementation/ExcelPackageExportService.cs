@@ -7,7 +7,7 @@ namespace SalesReport.Services.Implementation
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
-    class ExcelPackageExportService : IExcelPackageExportService
+    public class ExcelPackageExportService : IExcelPackageExportService
     {
         private const string DateFormat = "dd.mm.yyyy";
 

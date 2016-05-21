@@ -51,7 +51,7 @@ namespace SalesReport.Controllers
 
             _emailSender.Send("test@gmail.com", "Sales report", string.Empty, excelMemoryStream);
 
-            return Json(true);
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }
