@@ -1,8 +1,14 @@
-﻿@model SalesReport.ViewModels.ReportSettingsViewModel
+﻿@using System.Web.Optimization
+@model SalesReport.ViewModels.ReportSettingsViewModel
 
 @{
     ViewBag.Title = "Report constructor";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+{
+    @Styles.Render("~/Content/bootstrap-datetimepicker")
 }
 
 <h2>Report constructor</h2>
@@ -37,3 +43,9 @@
 <div>
     @Html.ActionLink("Download the report", "DownloadReport")
 </div>
+
+@section Scripts
+{
+    @Scripts.Render("~/Scripts/moment")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker")
+}

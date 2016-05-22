@@ -1,12 +1,23 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Optimization
+@{
+    ViewBag.Title = "Sales report application";
+}
 
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Sales report application</title>
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/bootstrap")
+    @RenderSection("Styles")
 </head>
 <body>
 <div>
-      @RenderBody()
+    @RenderBody()
+
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/bootstrap")
+    @RenderSection("Scripts")
 </div>
 </body>
 </html>
