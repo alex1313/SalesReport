@@ -11,7 +11,7 @@ namespace SalesReport.Services.Implementation
     {
         private const string DateFormat = "dd.mm.yyyy";
 
-        public ExcelPackage ExportOrder(IEnumerable<Order> orders)
+        public ExcelPackage ExportOrder(IEnumerable<OrderDetails> orderDetails)
         {
             var excelPackage = new ExcelPackage();
 
@@ -23,7 +23,7 @@ namespace SalesReport.Services.Implementation
             worksheet.Cells[1, 4].Value = "Quantity";
             worksheet.Cells[1, 5].Value = "Sum";
 
-            var orderDetailsList = orders.SelectMany(x => x.OrderDetails).ToList();
+            var orderDetailsList = orderDetails.ToList();
             for (var i = 0; i < orderDetailsList.Count; i++)
             {
                 worksheet.Cells[i + 2, 1].Value = orderDetailsList[i].OrderID;

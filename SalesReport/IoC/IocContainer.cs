@@ -1,4 +1,4 @@
-﻿namespace SalesReport.Windsor
+﻿namespace SalesReport.IoC
 {
     using System.Web.Mvc;
     using Castle.Windsor;

@@ -7,8 +7,8 @@
     using System.Web.Optimization;
     using System.Web.Routing;
     using DataAccess;
-    using Windsor;
-    
+    using IoC;
+
     public class MvcApplication : HttpApplication
     {
         protected void Application_Start()

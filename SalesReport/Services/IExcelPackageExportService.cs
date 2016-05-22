@@ -6,6 +6,6 @@
 
     public interface IExcelPackageExportService
     {
-        ExcelPackage ExportOrder(IEnumerable<Order> orders);
+        ExcelPackage ExportOrder(IEnumerable<OrderDetails> orderDetails);
     }
 }

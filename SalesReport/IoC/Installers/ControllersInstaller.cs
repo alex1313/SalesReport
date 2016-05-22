@@ -1,4 +1,4 @@
-﻿namespace SalesReport.Windsor.Installers
+﻿namespace SalesReport.IoC.Installers
 {
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;

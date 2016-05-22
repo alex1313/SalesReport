@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class Order
+    public class Order : IEntity
     {
         public int OrderID { get; set; }
         public DateTime OrderDate { get; set; }

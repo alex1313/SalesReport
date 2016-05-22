@@ -145,12 +145,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="IoC\Installers\DataAccessInstaller.cs" />
     <Compile Include="ViewModels\ReportSettingsViewModel.cs" />
-    <Compile Include="Windsor\WindsorControllerFactory.cs" />
-    <Compile Include="Windsor\IocContainer.cs" />
-    <Compile Include="Windsor\Installers\ControllersInstaller.cs" />
+    <Compile Include="IoC\WindsorControllerFactory.cs" />
+    <Compile Include="IoC\IocContainer.cs" />
+    <Compile Include="IoC\Installers\ControllersInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Windsor\Installers\ServicesInstaller.cs" />
+    <Compile Include="IoC\Installers\ServicesInstaller.cs" />
     <Compile Include="Services\Implementation\EmailSender.cs" />
     <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\Implementation\ExcelPackageExportService.cs" />

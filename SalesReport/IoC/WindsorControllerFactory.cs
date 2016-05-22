@@ -1,4 +1,4 @@
-﻿namespace SalesReport.Windsor
+﻿namespace SalesReport.IoC
 {
     using System;
     using System.Web;

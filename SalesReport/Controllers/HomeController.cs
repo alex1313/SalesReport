@@ -2,9 +2,11 @@
 
 namespace SalesReport.Controllers
 {
+    using System;
     using System.IO;
     using System.Linq;
     using DataAccess;
+    using DataAccess.UnitOfWork;
     using Services;
     using ViewModels;
 
@@ -13,15 +15,16 @@ namespace SalesReport.Controllers
         private const string ExcelContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         private const string ReportFileName = "Sales report.xlsx";
 
-        private readonly SalesReportDbContext _dbContext = new SalesReportDbContext();
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
 
         private readonly IExcelPackageExportService _excelPackageExportService;
         private readonly IEmailSender _emailSender;
 
-        public HomeController(IExcelPackageExportService excelPackageExportService, IEmailSender emailSender)
+        public HomeController(IExcelPackageExportService excelPackageExportService, IEmailSender emailSender, IUnitOfWorkFactory unitOfWorkFactory)
         {
             _excelPackageExportService = excelPackageExportService;
             _emailSender = emailSender;
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         [HttpGet]
@@ -33,16 +36,19 @@ namespace SalesReport.Controllers
         [HttpGet]
         public FileContentResult DownloadReport()
         {
-            var orders = _dbContext.Orders.AsEnumerable();
-
-            var excelPackage = _excelPackageExportService.ExportOrder(orders);
-
-            var result = new FileContentResult(excelPackage.GetAsByteArray(), ExcelContentType)
+            using (var uow = _unitOfWorkFactory.Create())
             {
-                FileDownloadName = ReportFileName
-            };
+                var orderDetails = uow.OrderDetailsRepository.GetAll();
 
-            return result;
+                var excelPackage = _excelPackageExportService.ExportOrder(orderDetails);
+
+                var result = new FileContentResult(excelPackage.GetAsByteArray(), ExcelContentType)
+                {
+                    FileDownloadName = ReportFileName
+                };
+
+                return result;
+            }
         }
 
         [HttpPost]
@@ -51,17 +57,23 @@ namespace SalesReport.Controllers
             if (ModelState.IsValid == false)
                 return View("Index", reportSettings);
 
-            var orders = _dbContext.Orders
-                .Where(x => reportSettings.StartDate.HasValue == false || x.OrderDate > reportSettings.StartDate.Value)
-                .Where(x => reportSettings.EndDate.HasValue == false || x.OrderDate < reportSettings.EndDate.Value)
-                .ToArray();
+            var startDate = reportSettings.StartDate ?? DateTime.MinValue;
+            var endDate = reportSettings.EndDate ?? DateTime.MaxValue;
 
-            var excelPackage = _excelPackageExportService.ExportOrder(orders);
-            var excelMemoryStream = new MemoryStream(excelPackage.GetAsByteArray());
+            // should be a query in the future
+            using (var uow = _unitOfWorkFactory.Create())
+            {
+                var orderDetails = uow.OrderDetailsRepository
+                    .Get(x => x.Order.OrderDate > startDate && x.Order.OrderDate < endDate)
+                    .ToArray();
 
-            _emailSender.Send(reportSettings.RecipientEmail, "Sales report", string.Empty, excelMemoryStream);
+                var excelPackage = _excelPackageExportService.ExportOrder(orderDetails);
+                var excelMemoryStream = new MemoryStream(excelPackage.GetAsByteArray());
 
-            return Json($"Report has been sent successfully ({orders.Length} order details exported)", JsonRequestBehavior.AllowGet);
+                _emailSender.Send(reportSettings.RecipientEmail, "Sales report", string.Empty, excelMemoryStream);
+
+                return Json($"Report has been sent successfully ({orderDetails.Length} order details exported)", JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
