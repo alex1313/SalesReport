@@ -1,14 +1,39 @@
-﻿@{
+﻿@model SalesReport.ViewModels.ReportSettingsViewModel
+
+@{
     ViewBag.Title = "Report constructor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Report constructor</h2>
 
-<div>
-    @Html.ActionLink("Download the report", "DownloadReport")
-</div>
+@using (Html.BeginForm("SendReportByEmail", "Home"))
+{
+    <div>
+        @Html.LabelFor(model => model.StartDate)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.StartDate)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.EndDate)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.EndDate)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.RecipientEmail)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.RecipientEmail)
+        @Html.ValidationMessageFor(model => model.RecipientEmail)
+    </div>
+
+    <input type="submit" value="Send report" class="btn btn-default" />
+}
 
 <div>
-    @Html.ActionLink("Send report by e-mail", "SendReportByEmail")
+    @Html.ActionLink("Download the report", "DownloadReport")
 </div>

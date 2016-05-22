@@ -6,6 +6,7 @@ namespace SalesReport.Controllers
     using System.Linq;
     using DataAccess;
     using Services;
+    using ViewModels;
 
     public class HomeController : Controller
     {
@@ -23,11 +24,13 @@ namespace SalesReport.Controllers
             _emailSender = emailSender;
         }
 
+        [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            return View(new ReportSettingsViewModel());
         }
 
+        [HttpGet]
         public FileContentResult DownloadReport()
         {
             var orders = _dbContext.Orders.AsEnumerable();
@@ -42,16 +45,23 @@ namespace SalesReport.Controllers
             return result;
         }
 
-        public JsonResult SendReportByEmail()
+        [HttpPost]
+        public ActionResult SendReportByEmail(ReportSettingsViewModel reportSettings)
         {
-            var orders = _dbContext.Orders.AsEnumerable();
+            if (ModelState.IsValid == false)
+                return View("Index", reportSettings);
+
+            var orders = _dbContext.Orders
+                .Where(x => reportSettings.StartDate.HasValue == false || x.OrderDate > reportSettings.StartDate.Value)
+                .Where(x => reportSettings.EndDate.HasValue == false || x.OrderDate < reportSettings.EndDate.Value)
+                .ToArray();
 
             var excelPackage = _excelPackageExportService.ExportOrder(orders);
             var excelMemoryStream = new MemoryStream(excelPackage.GetAsByteArray());
 
-            _emailSender.Send("test@gmail.com", "Sales report", string.Empty, excelMemoryStream);
+            _emailSender.Send(reportSettings.RecipientEmail, "Sales report", string.Empty, excelMemoryStream);
 
-            return Json(true, JsonRequestBehavior.AllowGet);
+            return Json($"Report has been sent successfully ({orders.Length} order details exported)", JsonRequestBehavior.AllowGet);
         }
     }
 }

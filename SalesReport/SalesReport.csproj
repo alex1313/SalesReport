@@ -131,6 +131,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ReportSettingsViewModel.cs" />
     <Compile Include="Windsor\WindsorControllerFactory.cs" />
     <Compile Include="Windsor\IocContainer.cs" />
     <Compile Include="Windsor\Installers\ControllersInstaller.cs" />
