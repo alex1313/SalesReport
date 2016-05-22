@@ -12,12 +12,12 @@
     @RenderSection("Styles")
 </head>
 <body>
-<div>
-    @RenderBody()
+    <div class="col-md-12">
+        @RenderBody()
 
-    @Scripts.Render("~/Scripts/jquery")
-    @Scripts.Render("~/Scripts/bootstrap")
-    @RenderSection("Scripts")
-</div>
+        @Scripts.Render("~/Scripts/jquery")
+        @Scripts.Render("~/Scripts/bootstrap")
+        @RenderSection("Scripts")
+    </div>
 </body>
 </html>

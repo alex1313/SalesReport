@@ -7,29 +7,28 @@
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/Scripts/jquery").Include(
-                "~/Scripts/jquery-1.9.1.js")
-                );
+                "~/Scripts/jquery-1.9.1.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/Scripts/bootstrap").Include(
-                "~/Scripts/bootstrap.js")
-                );
+                "~/Scripts/bootstrap.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/Scripts/moment").Include(
-                "~/Scripts/moment.js")
-                );
+                "~/Scripts/moment.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/Scripts/bootstrap-datetimepicker").Include(
-                "~/Scripts/bootstrap-datetimepicker.js")
-                );
+                "~/Scripts/bootstrap-datetimepicker.js"
+                ));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
-                "~/Content/bootstrap.css",
-                "~/Content/bootstrap-theme.css")
-                );
+                "~/Content/bootstrap.css"
+                ));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap-datetimepicker").Include(
-                "~/Content/bootstrap-datetimepicker.css")
-                );
+                "~/Content/bootstrap-datetimepicker.css"
+                ));
         }
     }
 }
