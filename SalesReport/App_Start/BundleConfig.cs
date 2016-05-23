@@ -29,6 +29,10 @@
             bundles.Add(new StyleBundle("~/Content/bootstrap-datetimepicker").Include(
                 "~/Content/bootstrap-datetimepicker.css"
                 ));
+
+            bundles.Add(new StyleBundle("~/Content/site-styles").Include(
+                "~/Content/site.css"
+                ));
         }
     }
 }

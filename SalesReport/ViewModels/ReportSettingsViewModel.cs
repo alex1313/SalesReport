@@ -11,9 +11,10 @@
         [Display(Name = "End date")]
         public DateTime? EndDate { get; set; }
 
-        [Required]
         [Display(Name = "Recipient email")]
-        [DataType(DataType.EmailAddress, ErrorMessage = "Please, enter the recipient email")]
+        [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "Please, enter the recipient email")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string RecipientEmail { get; set; }
     }
 }
